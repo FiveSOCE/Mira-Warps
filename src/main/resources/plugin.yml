@@ -1,0 +1,18 @@
+name: MiraWarps
+version: 0.1.0
+main: com.mira.warps.MiraWarpsPlugin
+api-version: '1.21'
+authors: [FiveS]
+description: EssentialsX-backed warp GUI for the Mira plugin ecosystem.
+depend: [Essentials]
+
+commands:
+  mwarps:
+    description: Opens the MiraWarps GUI.
+    usage: /mwarps
+    aliases: [mwarp]
+
+permissions:
+  mirawarps.use:
+    description: Allows access to the MiraWarps GUI.
+    default: true
