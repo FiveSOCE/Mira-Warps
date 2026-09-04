@@ -7,6 +7,9 @@ on:
     branches: [main]
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -28,6 +31,18 @@ jobs:
         if: success()
         uses: actions/upload-artifact@v4
         with:
-          name: MiraWarps
-          path: build/libs/MiraWarps-*.jar
+          name: MiraWarps-0.1.1
+          path: build/libs/MiraWarps-0.1.1.jar
           if-no-files-found: error
+      - name: Publish v0.1.1 release if missing
+        if: github.event_name != 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if ! gh release view v0.1.1 >/dev/null 2>&1; then
+            gh release create v0.1.1 \
+              build/libs/MiraWarps-0.1.1.jar \
+              --target "${{ github.sha }}" \
+              --title "MiraWarps v0.1.1" \
+              --notes "Delegates successful warp teleport visuals to MiraCosmetics, removes false-positive GUI selection particles and preserves EssentialsX as the sole warp/teleport authority."
+          fi
