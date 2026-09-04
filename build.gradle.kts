@@ -1,12 +1,10 @@
 import java.net.URI
 import java.security.MessageDigest
 
-plugins {
-    java
-}
+plugins { java }
 
 group = "com.mira"
-version = "0.1.0"
+version = "0.1.1"
 
 repositories {
     mavenCentral()
@@ -48,9 +46,7 @@ dependencies {
     compileOnly(files(essentialsJar))
 }
 
-java {
-    toolchain.languageVersion.set(JavaLanguageVersion.of(21))
-}
+java { toolchain.languageVersion.set(JavaLanguageVersion.of(21)) }
 
 tasks.withType<JavaCompile>().configureEach {
     dependsOn(downloadEssentials)
@@ -58,6 +54,4 @@ tasks.withType<JavaCompile>().configureEach {
     options.release.set(21)
 }
 
-tasks.jar {
-    archiveFileName.set("MiraWarps-${project.version}.jar")
-}
+tasks.jar { archiveFileName.set("MiraWarps-${project.version}.jar") }
