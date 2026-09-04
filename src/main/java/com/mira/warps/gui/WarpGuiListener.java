@@ -1,6 +1,5 @@
 package com.mira.warps.gui;
 
-import com.mira.warps.particle.WarpParticleService;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -12,17 +11,16 @@ import org.bukkit.inventory.ItemStack;
 
 public final class WarpGuiListener implements Listener {
     private final WarpGuiService gui;
-    private final WarpParticleService particles;
 
-    public WarpGuiListener(WarpGuiService gui, WarpParticleService particles) {
+    public WarpGuiListener(WarpGuiService gui) {
         this.gui = gui;
-        this.particles = particles;
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onClick(InventoryClickEvent event) {
         if (!(event.getWhoClicked() instanceof Player player)) return;
-        if (!(event.getView().getTopInventory().getHolder() instanceof WarpGuiService.Holder holder)) return;
+        if (!(event.getView().getTopInventory().getHolder()
+                instanceof WarpGuiService.Holder holder)) return;
 
         event.setCancelled(true);
         int raw = event.getRawSlot();
@@ -32,8 +30,7 @@ public final class WarpGuiListener implements Listener {
         String warp = gui.getWarp(clicked);
         if (warp != null) {
             player.closeInventory();
-            boolean accepted = Bukkit.dispatchCommand(player, "essentials:warp " + warp);
-            if (accepted) particles.play(player);
+            Bukkit.dispatchCommand(player, "essentials:warp " + warp);
             return;
         }
 
@@ -50,7 +47,8 @@ public final class WarpGuiListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onDrag(InventoryDragEvent event) {
-        if (event.getView().getTopInventory().getHolder() instanceof WarpGuiService.Holder) {
+        if (event.getView().getTopInventory().getHolder()
+                instanceof WarpGuiService.Holder) {
             event.setCancelled(true);
         }
     }
