@@ -3,14 +3,3 @@ gui:
   filler-material: GRAY_STAINED_GLASS_PANE
   warp-material: ENDER_EYE
   close-material: BARRIER
-
-particles:
-  enabled: true
-  duration-ticks: 24
-  interval-ticks: 2
-  points-per-ring: 20
-  radius: 0.85
-  size: 1.15
-  head-height: 1.75
-  body-height: 0.95
-  feet-height: 0.20
