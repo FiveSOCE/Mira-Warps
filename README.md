@@ -4,21 +4,26 @@ MiraWarps is the EssentialsX-backed warp GUI for the Mira Paper server suite. It
 
 ## Download
 
-[**Download MiraWarps v0.1.0**](https://github.com/FiveSOCE/Mira-Warps/releases/download/v0.1.0/MiraWarps-0.1.0.jar)
+[**Download MiraWarps v0.1.1**](https://github.com/FiveSOCE/Mira-Warps/releases/download/v0.1.1/MiraWarps-0.1.1.jar)
+
+[View All Releases](https://github.com/FiveSOCE/Mira-Warps/releases)
 
 ## Requirements / Dependencies
 
 - Paper 1.21.11
 - Java 21
 - EssentialsX 2.22.0 or newer
+- MiraCosmetics 0.1.1+ optional/recommended for teleport visuals
 
 ## How MiraWarps Works
 
-Warp names are read live from EssentialsX, so MiraWarps never maintains a separate warp database. The GUI starts compact, expands as required and paginates safely for larger warp lists. Each warp is displayed as an Eye of Ender named after the Essentials warp, with unused menu space filled using the Mira grey-glass presentation.
+Warp names are read live from EssentialsX, so MiraWarps never maintains a separate warp database. The GUI expands and paginates as required.
 
-Clicking a warp closes the GUI and dispatches Essentials' namespaced `/warp <name>` command. This means Essentials continues to enforce warp permissions, teleport behaviour and safety rules. After the player selects a warp, MiraWarps starts a configurable three-ring coloured particle effect around the player.
+Clicking a warp closes the GUI and dispatches Essentials' namespaced `/warp <name>` command. Essentials continues to enforce permission, delay, cooldown and teleport behavior.
 
-The `/warp` and `/warps` command bridge routes no-argument use into the GUI, while `/warp <name>` remains normal Essentials direct warp behaviour.
+v0.1.1 removes the old local three-ring particle renderer. When MiraCosmetics is installed, its global Paper `PlayerTeleportEvent` listener renders the player's configured TELEPORT cosmetic only after Essentials actually performs a teleport. Direct `/warp <name>` and GUI-selected warps therefore use the same visual pipeline.
+
+The `/warp` and `/warps` command bridge routes no-argument use into the GUI, while `/warp <name>` remains normal Essentials direct warp behavior.
 
 ## Commands
 
@@ -26,14 +31,20 @@ The `/warp` and `/warps` command bridge routes no-argument use into the GUI, whi
 | --- | --- | --- |
 | `/mwarps` | `mirawarps.use` | Opens the MiraWarps GUI. |
 | `/mwarp` | `mirawarps.use` | Alias for `/mwarps`. |
-| `/warp` | Essentials access + MiraWarps routing | Opens the MiraWarps GUI when used without a warp name. |
-| `/warps` | Essentials access + MiraWarps routing | Opens the MiraWarps GUI. |
-| `/warp <name>` | Essentials permissions | Remains EssentialsX's direct named-warp teleport command. |
+| `/warp` | Essentials access + MiraWarps routing | Opens the GUI when used without a warp name. |
+| `/warps` | Essentials access + MiraWarps routing | Opens the GUI. |
+| `/warp <name>` | Essentials permissions | Remains EssentialsX's direct named-warp command. |
 
-## Permissions
+## Visual Ownership
 
-| Permission | Default | What it does |
-| --- | --- | --- |
-| `mirawarps.use` | Everyone | Allows access to the MiraWarps GUI through the MiraWarps command surface. |
+MiraWarps owns the menu only. EssentialsX owns the teleport. MiraCosmetics owns successful teleport visuals.
 
-EssentialsX permissions continue to control access to the underlying warps themselves.
+No teleport particles are spawned merely because the GUI command was accepted, preventing false-positive or duplicate effects when Essentials denies, delays or later completes a teleport.
+
+## Building
+
+```bash
+gradle clean build
+```
+
+The output JAR is created in `build/libs/`.
