@@ -31,18 +31,18 @@ jobs:
         if: success()
         uses: actions/upload-artifact@v4
         with:
-          name: MiraWarps-0.1.4
-          path: build/libs/MiraWarps-0.1.4.jar
+          name: MiraWarps-0.1.5
+          path: build/libs/MiraWarps-0.1.5.jar
           if-no-files-found: error
-      - name: Publish v0.1.4 release if missing
+      - name: Publish v0.1.5 release if missing
         if: github.event_name != 'pull_request'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          if ! gh release view v0.1.4 >/dev/null 2>&1; then
-            gh release create v0.1.4 \
-              build/libs/MiraWarps-0.1.4.jar \
+          if ! gh release view v0.1.5 >/dev/null 2>&1; then
+            gh release create v0.1.5 \
+              build/libs/MiraWarps-0.1.5.jar \
               --target "${{ github.sha }}" \
-              --title "MiraWarps v0.1.4" \
-              --notes "Adds MiraCosmetics teleport-cancel audio when the /spawn warmup is cancelled by movement, while preserving the existing warmup integration and EssentialsX teleport backend."
+              --title "MiraWarps v0.1.5" \
+              --notes "Fixes MiraWarps Spawn integration by dispatching the correct EssentialsSpawn namespaced commands, adds explicit missing-module/error feedback for /spawn and /setspawn, and declares EssentialsSpawn as the optional spawn backend."
           fi
