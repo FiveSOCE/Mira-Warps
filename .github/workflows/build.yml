@@ -31,18 +31,18 @@ jobs:
         if: success()
         uses: actions/upload-artifact@v4
         with:
-          name: MiraWarps-0.1.5
-          path: build/libs/MiraWarps-0.1.5.jar
+          name: MiraWarps-0.1.6
+          path: build/libs/MiraWarps-0.1.6.jar
           if-no-files-found: error
-      - name: Publish v0.1.5 release if missing
+      - name: Publish v0.1.6 release if missing
         if: github.event_name != 'pull_request'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          if ! gh release view v0.1.5 >/dev/null 2>&1; then
-            gh release create v0.1.5 \
-              build/libs/MiraWarps-0.1.5.jar \
+          if ! gh release view v0.1.6 >/dev/null 2>&1; then
+            gh release create v0.1.6 \
+              build/libs/MiraWarps-0.1.6.jar \
               --target "${{ github.sha }}" \
-              --title "MiraWarps v0.1.5" \
-              --notes "Fixes MiraWarps Spawn integration by dispatching the correct EssentialsSpawn namespaced commands, adds explicit missing-module/error feedback for /spawn and /setspawn, and declares EssentialsSpawn as the optional spawn backend."
+              --title "MiraWarps v0.1.6" \
+              --notes "Fixes player-facing /spawn execution by dispatching EssentialsSpawn as the player after MiraWarps warmup/cooldown checks, removing the misleading Console teleported you to spawn feedback."
           fi
