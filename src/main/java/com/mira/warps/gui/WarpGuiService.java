@@ -43,7 +43,10 @@ public final class WarpGuiService {
             return;
         }
 
-        List<String> warps = warpNames();
+        List<String> warps = new ArrayList<>(warpNames());
+        if (plugin.getConfig().getBoolean("spawn.show-in-warps-gui", false)) {
+            warps.add(0, "__spawn__");
+        }
         int maxPage = Math.max(0, (warps.size() - 1) / MAX_WARPS_PER_PAGE);
         int safePage = Math.max(0, Math.min(page, maxPage));
         int start = safePage * MAX_WARPS_PER_PAGE;
@@ -104,10 +107,15 @@ public final class WarpGuiService {
     }
 
     private ItemStack warpItem(String warp) {
-        ItemStack item = new ItemStack(configMaterial("gui.warp-material", Material.ENDER_EYE));
+        boolean spawn = "__spawn__".equalsIgnoreCase(warp);
+        ItemStack item = new ItemStack(spawn
+                ? configMaterial("spawn.gui-material", Material.NETHER_STAR)
+                : configMaterial("gui.warp-material", Material.ENDER_EYE));
         ItemMeta meta = item.getItemMeta();
-        meta.displayName(Component.text(warp, NamedTextColor.AQUA).decoration(TextDecoration.ITALIC, false));
-        meta.getPersistentDataContainer().set(warpKey, PersistentDataType.STRING, warp);
+        meta.displayName(Component.text(spawn ? "Spawn" : warp,
+                spawn ? NamedTextColor.LIGHT_PURPLE : NamedTextColor.AQUA)
+                .decoration(TextDecoration.ITALIC, false));
+        meta.getPersistentDataContainer().set(warpKey, PersistentDataType.STRING, spawn ? "__spawn__" : warp);
         item.setItemMeta(meta);
         return item;
     }
