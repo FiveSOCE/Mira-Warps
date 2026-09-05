@@ -4,7 +4,7 @@ MiraWarps is the EssentialsX-backed warp GUI for the Mira Paper server suite. It
 
 ## Download
 
-[**Download MiraWarps v0.1.5**](https://github.com/FiveSOCE/Mira-Warps/releases/download/v0.1.5/MiraWarps-0.1.5.jar)
+[**Download MiraWarps v0.1.6**](https://github.com/FiveSOCE/Mira-Warps/releases/download/v0.1.6/MiraWarps-0.1.6.jar)
 
 [View All Releases](https://github.com/FiveSOCE/Mira-Warps/releases)
 
@@ -86,3 +86,8 @@ v0.1.5 fixes the Spawn bridge to dispatch the correct `essentialsspawn:spawn` an
 The previous build incorrectly used the main Essentials namespace even though `/spawn` and `/setspawn` are registered by the separate `EssentialsSpawn` plugin. This caused `/setspawn` to appear silent and `/spawn` to report that the teleport could not be started.
 
 MiraWarps now also detects when the EssentialsX Spawn module is missing/disabled and gives an explicit player-facing error instead of silently failing.
+
+
+## Spawn Feedback Hotfix (0.1.6)
+
+After MiraWarps completes its own warmup/cooldown checks, the final EssentialsSpawn teleport is now dispatched **as the player** using `essentialsspawn:spawn`. This removes Essentials' misleading `Console teleported you to spawn` message while keeping EssentialsX Spawn as the final spawn authority.
