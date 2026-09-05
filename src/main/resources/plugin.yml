@@ -1,9 +1,9 @@
 name: MiraWarps
-version: 0.1.1
+version: 0.1.2
 main: com.mira.warps.MiraWarpsPlugin
 api-version: '1.21'
 authors: [FiveS]
-description: EssentialsX-backed warp GUI for the Mira plugin ecosystem.
+description: EssentialsX-backed warps plus first-class Spawn routing for the Mira plugin ecosystem.
 depend: [Essentials]
 softdepend: [MiraCosmetics]
 
@@ -18,3 +18,15 @@ permissions:
   mirawarps.use:
     description: Allows access to the MiraWarps GUI.
     default: true
+  mirawarps.spawn:
+    description: Allows /spawn through MiraWarps.
+    default: true
+  mirawarps.setspawn:
+    description: Allows /setspawn through MiraWarps.
+    default: op
+  mirawarps.spawn.bypass.warmup:
+    description: Bypasses the MiraWarps spawn warmup.
+    default: op
+  mirawarps.spawn.bypass.cooldown:
+    description: Bypasses the MiraWarps spawn cooldown.
+    default: op
