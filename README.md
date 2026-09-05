@@ -4,7 +4,7 @@ MiraWarps is the EssentialsX-backed warp GUI for the Mira Paper server suite. It
 
 ## Download
 
-[**Download MiraWarps v0.1.3**](https://github.com/FiveSOCE/Mira-Warps/releases/download/v0.1.3/MiraWarps-0.1.3.jar)
+[**Download MiraWarps v0.1.4**](https://github.com/FiveSOCE/Mira-Warps/releases/download/v0.1.4/MiraWarps-0.1.4.jar)
 
 [View All Releases](https://github.com/FiveSOCE/Mira-Warps/releases)
 
@@ -73,3 +73,7 @@ The shared message prefix is `&5&lMira &8&l>> &r`.
 When MiraCosmetics v0.1.3+ is installed, MiraWarps calls its teleport warmup API as soon as the configured `/spawn` warmup begins.
 
 MiraCosmetics owns the warmup particles/sound and applies each player's Visual/Audio toggle. MiraWarps still owns warmup timing, movement cancellation and cooldowns.
+
+## MiraCosmetics Audio Integration (0.1.4)
+
+The existing `/spawn` warmup now emits `teleport_cancel` when movement cancels the pending teleport. MiraCosmetics stops the active warmup pitch sequence and plays the configured cancellation sound while preserving EssentialsX as the teleport backend.
