@@ -128,6 +128,7 @@ public final class SpawnFeatureListener implements Listener {
                 || from.getBlockY() != to.getBlockY()
                 || from.getBlockZ() != to.getBlockZ()) {
             cancelPending(event.getPlayer().getUniqueId(), true);
+            playCosmeticsEvent(event.getPlayer(), "teleport_cancel");
             message(event.getPlayer(), "&cSpawn teleport cancelled because you moved.");
         }
     }
@@ -210,6 +211,24 @@ public final class SpawnFeatureListener implements Listener {
                 plugin.getLogger().fine("MiraCosmetics warmup API unavailable: " + exception.getMessage());
             }
             return;
+        }
+    }
+
+    private void playCosmeticsEvent(Player player, String eventId) {
+        Plugin cosmetics = Bukkit.getPluginManager().getPlugin("MiraCosmetics");
+        if (cosmetics == null || !cosmetics.isEnabled()) return;
+        try {
+            cosmetics.getClass().getMethod("playEvent", Player.class, String.class, Location.class)
+                    .invoke(cosmetics, player, eventId, player.getLocation());
+        } catch (NoSuchMethodException ignored) {
+            try {
+                cosmetics.getClass().getMethod("playVisualEvent", Player.class, String.class, Location.class)
+                        .invoke(cosmetics, player, eventId, player.getLocation());
+            } catch (ReflectiveOperationException ignoredToo) {
+                plugin.getLogger().fine("MiraCosmetics event API unavailable: " + ignoredToo.getMessage());
+            }
+        } catch (ReflectiveOperationException exception) {
+            plugin.getLogger().fine("MiraCosmetics event API unavailable: " + exception.getMessage());
         }
     }
 
