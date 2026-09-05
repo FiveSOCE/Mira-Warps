@@ -114,8 +114,10 @@ public final class SpawnFeatureListener implements Listener {
             return;
         }
 
-        boolean dispatched = Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
-                "essentialsspawn:spawn " + player.getName());
+        // Run EssentialsSpawn as the player after MiraWarps has completed its own
+        // warmup/cooldown checks. Console dispatch makes Essentials announce
+        // "Console teleported you to spawn", which is not the player-facing flow we want.
+        boolean dispatched = Bukkit.dispatchCommand(player, "essentialsspawn:spawn");
         if (!dispatched) {
             message(player, "&cSpawn teleport could not be started because EssentialsX Spawn did not accept /spawn.");
             return;
