@@ -4,7 +4,7 @@ MiraWarps is the EssentialsX-backed warp GUI for the Mira Paper server suite. It
 
 ## Download
 
-[**Download MiraWarps v0.1.4**](https://github.com/FiveSOCE/Mira-Warps/releases/download/v0.1.4/MiraWarps-0.1.4.jar)
+[**Download MiraWarps v0.1.5**](https://github.com/FiveSOCE/Mira-Warps/releases/download/v0.1.5/MiraWarps-0.1.5.jar)
 
 [View All Releases](https://github.com/FiveSOCE/Mira-Warps/releases)
 
@@ -13,6 +13,7 @@ MiraWarps is the EssentialsX-backed warp GUI for the Mira Paper server suite. It
 - Paper 1.21.11
 - Java 21
 - EssentialsX 2.22.0 or newer
+- EssentialsX Spawn module required for `/spawn` and `/setspawn`
 - MiraCosmetics 0.1.1+ optional/recommended for teleport visuals
 
 ## How MiraWarps Works
@@ -52,7 +53,7 @@ The output JAR is created in `build/libs/`.
 
 ## Spawn
 
-MiraWarps now owns the player-facing Spawn flow while EssentialsX remains the final teleport backend.
+MiraWarps now owns the player-facing Spawn flow while the EssentialsX Spawn module remains the final spawn/setspawn backend.
 
 - `/spawn` requires `mirawarps.spawn`.
 - `/setspawn` requires `mirawarps.setspawn`.
@@ -77,3 +78,11 @@ MiraCosmetics owns the warmup particles/sound and applies each player's Visual/A
 ## MiraCosmetics Audio Integration (0.1.4)
 
 The existing `/spawn` warmup now emits `teleport_cancel` when movement cancels the pending teleport. MiraCosmetics stops the active warmup pitch sequence and plays the configured cancellation sound while preserving EssentialsX as the teleport backend.
+
+## EssentialsSpawn Namespace Fix (0.1.5)
+
+v0.1.5 fixes the Spawn bridge to dispatch the correct `essentialsspawn:spawn` and `essentialsspawn:setspawn` commands.
+
+The previous build incorrectly used the main Essentials namespace even though `/spawn` and `/setspawn` are registered by the separate `EssentialsSpawn` plugin. This caused `/setspawn` to appear silent and `/spawn` to report that the teleport could not be started.
+
+MiraWarps now also detects when the EssentialsX Spawn module is missing/disabled and gives an explicit player-facing error instead of silently failing.
