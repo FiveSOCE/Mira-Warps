@@ -15,6 +15,8 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.scheduler.BukkitTask;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.RegisteredServiceProvider;
 
 import java.io.File;
 import java.io.IOException;
@@ -87,6 +89,7 @@ public final class SpawnFeatureListener implements Listener {
         }
 
         Location start = player.getLocation().clone();
+        playCosmeticsWarmup(player, warmup);
         BukkitTask task = Bukkit.getScheduler().runTaskLater(plugin, () -> {
             pending.remove(player.getUniqueId());
             if (!player.isOnline()) return;
@@ -192,6 +195,22 @@ public final class SpawnFeatureListener implements Listener {
         long minutes = seconds / 60L;
         long remainder = seconds % 60L;
         return minutes > 0L ? minutes + "m " + remainder + "s" : remainder + "s";
+    }
+
+    private void playCosmeticsWarmup(Player player, int durationSeconds) {
+        Plugin cosmetics = Bukkit.getPluginManager().getPlugin("MiraCosmetics");
+        if (cosmetics == null || !cosmetics.isEnabled()) return;
+        for (RegisteredServiceProvider<?> registration : Bukkit.getServicesManager().getRegistrations(cosmetics)) {
+            if (!registration.getService().getName().endsWith("CosmeticsApi")) continue;
+            try {
+                registration.getProvider().getClass()
+                        .getMethod("playTeleportWarmup", Player.class, int.class)
+                        .invoke(registration.getProvider(), player, durationSeconds);
+            } catch (ReflectiveOperationException exception) {
+                plugin.getLogger().fine("MiraCosmetics warmup API unavailable: " + exception.getMessage());
+            }
+            return;
+        }
     }
 
     private void message(Player player, String raw) {
