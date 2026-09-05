@@ -30,7 +30,11 @@ public final class WarpGuiListener implements Listener {
         String warp = gui.getWarp(clicked);
         if (warp != null) {
             player.closeInventory();
-            Bukkit.dispatchCommand(player, "essentials:warp " + warp);
+            if ("__spawn__".equalsIgnoreCase(warp)) {
+                Bukkit.dispatchCommand(player, "essentials:spawn");
+            } else {
+                Bukkit.dispatchCommand(player, "essentials:warp " + warp);
+            }
             return;
         }
 
