@@ -97,7 +97,8 @@ public final class SpawnFeatureListener implements Listener {
     }
 
     private void executeSpawn(Player player, boolean applyCooldown) {
-        boolean dispatched = Bukkit.dispatchCommand(player, "essentials:spawn");
+        boolean dispatched = Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
+                "essentials:spawn " + player.getName());
         if (!dispatched) {
             message(player, "&cSpawn teleport could not be started. Check EssentialsX Spawn.");
             return;
