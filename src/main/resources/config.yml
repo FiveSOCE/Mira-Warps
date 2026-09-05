@@ -3,3 +3,13 @@ gui:
   filler-material: GRAY_STAINED_GLASS_PANE
   warp-material: ENDER_EYE
   close-material: BARRIER
+
+spawn:
+  enabled: true
+  first-join: true
+  respawn-at-spawn: false
+  warmup-seconds: 5
+  cooldown-seconds: 30
+  cancel-on-move: true
+  show-in-warps-gui: false
+  gui-material: NETHER_STAR
