@@ -63,7 +63,15 @@ public final class SpawnFeatureListener implements Listener {
                 message(player, "&cYou do not have permission to set spawn.");
                 return;
             }
-            Bukkit.dispatchCommand(player, "essentials:setspawn");
+            Plugin essentialsSpawn = Bukkit.getPluginManager().getPlugin("EssentialsSpawn");
+            if (essentialsSpawn == null || !essentialsSpawn.isEnabled()) {
+                message(player, "&cEssentialsX Spawn is not installed or enabled.");
+                return;
+            }
+            boolean dispatched = Bukkit.dispatchCommand(player, "essentialsspawn:setspawn");
+            if (!dispatched) {
+                message(player, "&cSpawn point could not be set because EssentialsX Spawn did not accept /setspawn.");
+            }
         }
     }
 
@@ -100,10 +108,16 @@ public final class SpawnFeatureListener implements Listener {
     }
 
     private void executeSpawn(Player player, boolean applyCooldown) {
+        Plugin essentialsSpawn = Bukkit.getPluginManager().getPlugin("EssentialsSpawn");
+        if (essentialsSpawn == null || !essentialsSpawn.isEnabled()) {
+            message(player, "&cEssentialsX Spawn is not installed or enabled.");
+            return;
+        }
+
         boolean dispatched = Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
-                "essentials:spawn " + player.getName());
+                "essentialsspawn:spawn " + player.getName());
         if (!dispatched) {
-            message(player, "&cSpawn teleport could not be started. Check EssentialsX Spawn.");
+            message(player, "&cSpawn teleport could not be started because EssentialsX Spawn did not accept /spawn.");
             return;
         }
         if (applyCooldown && !player.hasPermission("mirawarps.spawn.bypass.cooldown")) {
