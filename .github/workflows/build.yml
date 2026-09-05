@@ -31,18 +31,18 @@ jobs:
         if: success()
         uses: actions/upload-artifact@v4
         with:
-          name: MiraWarps-0.1.2
-          path: build/libs/MiraWarps-0.1.2.jar
+          name: MiraWarps-0.1.3
+          path: build/libs/MiraWarps-0.1.3.jar
           if-no-files-found: error
-      - name: Publish v0.1.2 release if missing
+      - name: Publish v0.1.3 release if missing
         if: github.event_name != 'pull_request'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          if ! gh release view v0.1.2 >/dev/null 2>&1; then
-            gh release create v0.1.2 \
-              build/libs/MiraWarps-0.1.2.jar \
+          if ! gh release view v0.1.3 >/dev/null 2>&1; then
+            gh release create v0.1.3 \
+              build/libs/MiraWarps-0.1.3.jar \
               --target "${{ github.sha }}" \
-              --title "MiraWarps v0.1.2" \
-              --notes "Adds first-class Spawn routing with warmup, cooldown, movement cancellation, restart-safe cooldown persistence, first-join/respawn options and optional GUI entry while retaining EssentialsX as the final teleport backend and MiraCosmetics as visual authority."
+              --title "MiraWarps v0.1.3" \
+              --notes "Integrates /spawn warmup with MiraCosmetics v0.1.3 so teleport warmup particles/audio begin at the actual MiraWarps warmup while preserving EssentialsX as final teleport backend and MiraCosmetics as presentation authority."
           fi
