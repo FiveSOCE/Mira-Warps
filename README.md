@@ -4,7 +4,7 @@ MiraWarps is the EssentialsX-backed warp GUI for the Mira Paper server suite. It
 
 ## Download
 
-[**Download MiraWarps v0.1.2**](https://github.com/FiveSOCE/Mira-Warps/releases/download/v0.1.2/MiraWarps-0.1.2.jar)
+[**Download MiraWarps v0.1.3**](https://github.com/FiveSOCE/Mira-Warps/releases/download/v0.1.3/MiraWarps-0.1.3.jar)
 
 [View All Releases](https://github.com/FiveSOCE/Mira-Warps/releases)
 
@@ -21,7 +21,7 @@ Warp names are read live from EssentialsX, so MiraWarps never maintains a separa
 
 Clicking a warp closes the GUI and dispatches Essentials' namespaced `/warp <name>` command. Essentials continues to enforce permission, delay, cooldown and teleport behavior.
 
-v0.1.2 removes the old local three-ring particle renderer. When MiraCosmetics is installed, its global Paper `PlayerTeleportEvent` listener renders the player's configured TELEPORT cosmetic only after Essentials actually performs a teleport. Direct `/warp <name>` and GUI-selected warps therefore use the same visual pipeline.
+v0.1.3 removes the old local three-ring particle renderer. When MiraCosmetics is installed, its global Paper `PlayerTeleportEvent` listener renders the player's configured TELEPORT cosmetic only after Essentials actually performs a teleport. Direct `/warp <name>` and GUI-selected warps therefore use the same visual pipeline.
 
 The `/warp` and `/warps` command bridge routes no-argument use into the GUI, while `/warp <name>` remains normal Essentials direct warp behavior.
 
@@ -66,3 +66,10 @@ MiraWarps now owns the player-facing Spawn flow while EssentialsX remains the fi
 - Successful teleport visuals remain owned by MiraCosmetics via the actual Bukkit teleport event.
 
 The shared message prefix is `&5&lMira &8&l>> &r`.
+
+
+## Spawn Warmup Cosmetics
+
+When MiraCosmetics v0.1.3+ is installed, MiraWarps calls its teleport warmup API as soon as the configured `/spawn` warmup begins.
+
+MiraCosmetics owns the warmup particles/sound and applies each player's Visual/Audio toggle. MiraWarps still owns warmup timing, movement cancellation and cooldowns.
