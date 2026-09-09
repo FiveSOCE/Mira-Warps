@@ -1,12 +1,14 @@
 # MiraWarps
 
-MiraWarps is the EssentialsX-backed warp GUI for the Mira Paper server suite. It presents the server's existing Essentials warps through a clean visual menu while leaving Essentials authoritative for warp data, teleport rules and permissions.
-
 ## Download
 
-[**Download MiraWarps v0.1.6**](https://github.com/FiveSOCE/Mira-Warps/releases/download/v0.1.7/MiraWarps-0.1.7.jar)
+**Latest compatibility release: v0.1.7**
 
-[View All Releases](https://github.com/FiveSOCE/Mira-Warps/releases)
+[**Download MiraWarps-0.1.7.jar**](https://github.com/FiveSOCE/Mira-Warps/releases/download/v0.1.7/MiraWarps-0.1.7.jar)
+
+[View all releases](https://github.com/FiveSOCE/Mira-Warps/releases)
+
+MiraWarps is the EssentialsX-backed warp GUI for the Mira Paper server suite. It presents the server's existing Essentials warps through a clean visual menu while leaving Essentials authoritative for warp data, teleport rules and permissions.
 
 ## Requirements / Dependencies
 
