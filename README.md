@@ -4,7 +4,7 @@ MiraWarps is the EssentialsX-backed warp GUI for the Mira Paper server suite. It
 
 ## Download
 
-[**Download MiraWarps v0.1.6**](https://github.com/FiveSOCE/Mira-Warps/releases/download/v0.1.6/MiraWarps-0.1.6.jar)
+[**Download MiraWarps v0.1.6**](https://github.com/FiveSOCE/Mira-Warps/releases/download/v0.1.7/MiraWarps-0.1.7.jar)
 
 [View All Releases](https://github.com/FiveSOCE/Mira-Warps/releases)
 
