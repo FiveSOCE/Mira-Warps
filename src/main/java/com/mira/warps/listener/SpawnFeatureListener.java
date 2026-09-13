@@ -1,6 +1,7 @@
 package com.mira.warps.listener;
 
 import com.mira.warps.MiraWarpsPlugin;
+import net.ess3.api.IEssentials;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -20,6 +21,7 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -30,13 +32,15 @@ public final class SpawnFeatureListener implements Listener {
     private static final String PREFIX = "&5&lMira &8&l>> &r";
 
     private final MiraWarpsPlugin plugin;
+    private final IEssentials essentials;
     private final Map<UUID, PendingSpawn> pending = new HashMap<>();
     private final Map<UUID, Long> cooldownUntil = new HashMap<>();
     private final File dataFile;
     private YamlConfiguration data;
 
-    public SpawnFeatureListener(MiraWarpsPlugin plugin) {
+    public SpawnFeatureListener(MiraWarpsPlugin plugin, IEssentials essentials) {
         this.plugin = plugin;
+        this.essentials = essentials;
         this.dataFile = new File(plugin.getDataFolder(), "spawn-data.yml");
         load();
     }
@@ -114,20 +118,39 @@ public final class SpawnFeatureListener implements Listener {
             return;
         }
 
-        // Run EssentialsSpawn as the player after MiraWarps has completed its own
-        // warmup/cooldown checks. Console dispatch makes Essentials announce
-        // "Console teleported you to spawn", which is not the player-facing flow we want.
-        boolean dispatched = Bukkit.dispatchCommand(player, "essentialsspawn:spawn");
-        if (!dispatched) {
-            message(player, "&cSpawn teleport could not be started because EssentialsX Spawn did not accept /spawn.");
+        Location target = resolveEssentialsSpawn(essentialsSpawn, player);
+        if (target == null || target.getWorld() == null) {
+            message(player, "&cSpawn location could not be resolved from EssentialsX Spawn.");
             return;
         }
+
+        boolean teleported = player.teleport(target);
+        if (!teleported) {
+            message(player, "&cSpawn teleport was cancelled.");
+            return;
+        }
+
         if (applyCooldown && !player.hasPermission("mirawarps.spawn.bypass.cooldown")) {
             long seconds = Math.max(0L, plugin.getConfig().getLong("spawn.cooldown-seconds", 30L));
             if (seconds > 0L) {
                 cooldownUntil.put(player.getUniqueId(), System.currentTimeMillis() + seconds * 1000L);
                 save();
             }
+        }
+    }
+
+    private Location resolveEssentialsSpawn(Plugin essentialsSpawn, Player player) {
+        try {
+            String group = essentials.getUser(player).getGroup();
+            Method getSpawn = essentialsSpawn.getClass().getMethod("getSpawn", String.class);
+            Object value = getSpawn.invoke(essentialsSpawn, group == null || group.isBlank() ? "default" : group);
+            if (value instanceof Location location) return location.clone();
+
+            value = getSpawn.invoke(essentialsSpawn, "default");
+            return value instanceof Location location ? location.clone() : null;
+        } catch (ReflectiveOperationException | RuntimeException exception) {
+            plugin.getLogger().warning("Could not resolve EssentialsX spawn directly: " + exception.getMessage());
+            return null;
         }
     }
 
