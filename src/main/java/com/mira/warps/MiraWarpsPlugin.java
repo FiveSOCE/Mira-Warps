@@ -30,7 +30,7 @@ public final class MiraWarpsPlugin extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new WarpGuiListener(gui), this);
         getServer().getPluginManager().registerEvents(new WarpCommandBridgeListener(gui), this);
-        getServer().getPluginManager().registerEvents(new SpawnFeatureListener(this), this);
+        getServer().getPluginManager().registerEvents(new SpawnFeatureListener(this, essentials), this);
 
         PluginCommand command = getCommand("mwarps");
         if (command != null) {
