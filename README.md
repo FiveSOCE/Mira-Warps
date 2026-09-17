@@ -1,48 +1,111 @@
 # MiraWarps
 
-## Download
+EssentialsX-backed warp and spawn presentation layer for the Mira Paper server suite.
 
-**Latest compatibility release: v0.1.7**
+MiraWarps provides a clean paginated warp GUI and a Mira-owned `/spawn` warmup/cooldown flow while leaving EssentialsX authoritative for warp data and EssentialsSpawn authoritative for the final spawn location.
 
-[**Download MiraWarps-0.1.7.jar**](https://github.com/FiveSOCE/Mira-Warps/releases/download/v0.1.7/MiraWarps-0.1.7.jar)
+## Current Release
 
-[View all releases](https://github.com/FiveSOCE/Mira-Warps/releases)
+**v0.1.8** — compatible with Paper/Minecraft **1.21.11 through 26.2** using Java 21 bytecode.
 
-MiraWarps is the EssentialsX-backed warp GUI for the Mira Paper server suite. It presents the server's existing Essentials warps through a clean visual menu while leaving Essentials authoritative for warp data, teleport rules and permissions.
+[View releases](https://github.com/FiveSOCE/Mira-Warps/releases)
 
-## Requirements / Dependencies
+## Requirements
 
-- Paper 1.21.11
+- Paper 1.21.11 through 26.2
 - Java 21
-- EssentialsX 2.22.0 or newer
-- EssentialsX Spawn module required for `/spawn` and `/setspawn`
-- MiraCosmetics 0.1.1+ optional/recommended for teleport visuals
+- EssentialsX 2.22.0+
+- EssentialsSpawn for `/spawn` and `/setspawn`
+- MiraCosmetics optional/recommended
+- MiraCombatTag optional integration
 
-## How MiraWarps Works
+## Warp GUI
 
-Warp names are read live from EssentialsX, so MiraWarps never maintains a separate warp database. The GUI expands and paginates as required.
+MiraWarps reads warp names live from EssentialsX and does not maintain a second warp database.
 
-Clicking a warp closes the GUI and dispatches Essentials' namespaced `/warp <name>` command. Essentials continues to enforce permission, delay, cooldown and teleport behavior.
+- `/mwarps` opens the GUI
+- `/warp` with no warp name routes into the GUI
+- `/warps` routes into the GUI
+- `/warp <name>` remains direct EssentialsX named-warp behavior
+- the GUI expands/paginates as required
 
-v0.1.3 removes the old local three-ring particle renderer. When MiraCosmetics is installed, its global Paper `PlayerTeleportEvent` listener renders the player's configured TELEPORT cosmetic only after Essentials actually performs a teleport. Direct `/warp <name>` and GUI-selected warps therefore use the same visual pipeline.
+Selecting a warp dispatches the Essentials namespaced warp command. Essentials continues to own named-warp permissions, delays, cooldowns and the final teleport.
 
-The `/warp` and `/warps` command bridge routes no-argument use into the GUI, while `/warp <name>` remains normal Essentials direct warp behavior.
+## Spawn Flow
+
+MiraWarps owns the player-facing `/spawn` flow while EssentialsSpawn remains the final spawn/setspawn backend.
+
+Spawn supports:
+
+- configurable warmup
+- configurable cooldown
+- movement cancellation
+- restart-safe absolute cooldown timestamps
+- first-join routing
+- optional respawn-at-spawn
+- optional Spawn entry in the Warps GUI
+- warmup/cooldown bypass permissions
+
+MiraCombatTag's global command lockdown can block `/spawn` before the teleport begins.
+
+## Single Warmup Ownership — v0.1.8
+
+MiraWarps now owns the **single** configured `/spawn` warmup.
+
+After MiraWarps finishes its own warmup and cooldown checks, it teleports directly to the EssentialsSpawn location instead of starting a second Essentials teleport timer. This removes the previous double-warmup behavior.
+
+The final destination remains the configured EssentialsX Spawn location; MiraWarps simply prevents two independent warmup systems from competing.
+
+## MiraCosmetics Integration
+
+MiraWarps does not render its own teleport particles.
+
+When MiraCosmetics is installed:
+
+- teleport warmup presentation begins with the real MiraWarps spawn queue
+- cancellation presentation fires if movement cancels the queue
+- completion presentation fires only after the actual successful Bukkit/Paper teleport
+- player Visual and Audio toggles are respected independently
+
+This keeps MiraWarps responsible for teleport state while MiraCosmetics owns presentation.
 
 ## Commands
 
-| Command | Permission | What it does |
+| Command | Permission | Purpose |
 | --- | --- | --- |
-| `/mwarps` | `mirawarps.use` | Opens the MiraWarps GUI. |
+| `/mwarps` | `mirawarps.use` | Opens the warp GUI. |
 | `/mwarp` | `mirawarps.use` | Alias for `/mwarps`. |
-| `/warp` | Essentials access + MiraWarps routing | Opens the GUI when used without a warp name. |
-| `/warps` | Essentials access + MiraWarps routing | Opens the GUI. |
-| `/warp <name>` | Essentials permissions | Remains EssentialsX's direct named-warp command. |
+| `/warp` | normal warp access | Opens the GUI when no warp name is provided. |
+| `/warps` | normal warp access | Opens the GUI. |
+| `/warp <name>` | Essentials permissions | Direct Essentials named warp. |
+| `/spawn` | `mirawarps.spawn` | Runs the MiraWarps spawn flow. |
+| `/setspawn` | `mirawarps.setspawn` | Uses the EssentialsSpawn backend to set spawn. |
 
-## Visual Ownership
+## Spawn Permissions
 
-MiraWarps owns the menu only. EssentialsX owns the teleport. MiraCosmetics owns successful teleport visuals.
+```text
+mirawarps.spawn
+mirawarps.setspawn
+mirawarps.spawn.bypass.warmup
+mirawarps.spawn.bypass.cooldown
+```
 
-No teleport particles are spawned merely because the GUI command was accepted, preventing false-positive or duplicate effects when Essentials denies, delays or later completes a teleport.
+## Persistence
+
+Spawn cooldown timestamps are stored in:
+
+```text
+plugins/MiraWarps/spawn-data.yml
+```
+
+## Ownership Model
+
+- **EssentialsX** owns warp definitions and named-warp behavior.
+- **EssentialsSpawn** owns the configured spawn location.
+- **MiraWarps** owns the GUI and player-facing spawn queue/warmup/cooldown.
+- **MiraCosmetics** owns teleport visual/audio presentation.
+
+Keeping these responsibilities separate prevents duplicate timers and duplicate particle/sound effects.
 
 ## Building
 
@@ -51,45 +114,3 @@ gradle clean build
 ```
 
 The output JAR is created in `build/libs/`.
-
-
-## Spawn
-
-MiraWarps now owns the player-facing Spawn flow while the EssentialsX Spawn module remains the final spawn/setspawn backend.
-
-- `/spawn` requires `mirawarps.spawn`.
-- `/setspawn` requires `mirawarps.setspawn`.
-- Spawn has its own configurable warmup, cooldown and movement cancellation.
-- Cooldowns are stored as absolute timestamps in `plugins/MiraWarps/spawn-data.yml` and survive restarts.
-- `mirawarps.spawn.bypass.warmup` and `mirawarps.spawn.bypass.cooldown` bypass those controls.
-- First-join routing is enabled by default.
-- Respawn-at-spawn is configurable and disabled by default.
-- Spawn can optionally appear as a dedicated entry in the Warps GUI.
-- MiraCombatTag's global command lockdown blocks player `/spawn` while combat tagged before MiraWarps can begin the teleport.
-- Successful teleport visuals remain owned by MiraCosmetics via the actual Bukkit teleport event.
-
-The shared message prefix is `&5&lMira &8&l>> &r`.
-
-
-## Spawn Warmup Cosmetics
-
-When MiraCosmetics v0.1.3+ is installed, MiraWarps calls its teleport warmup API as soon as the configured `/spawn` warmup begins.
-
-MiraCosmetics owns the warmup particles/sound and applies each player's Visual/Audio toggle. MiraWarps still owns warmup timing, movement cancellation and cooldowns.
-
-## MiraCosmetics Audio Integration (0.1.4)
-
-The existing `/spawn` warmup now emits `teleport_cancel` when movement cancels the pending teleport. MiraCosmetics stops the active warmup pitch sequence and plays the configured cancellation sound while preserving EssentialsX as the teleport backend.
-
-## EssentialsSpawn Namespace Fix (0.1.5)
-
-v0.1.5 fixes the Spawn bridge to dispatch the correct `essentialsspawn:spawn` and `essentialsspawn:setspawn` commands.
-
-The previous build incorrectly used the main Essentials namespace even though `/spawn` and `/setspawn` are registered by the separate `EssentialsSpawn` plugin. This caused `/setspawn` to appear silent and `/spawn` to report that the teleport could not be started.
-
-MiraWarps now also detects when the EssentialsX Spawn module is missing/disabled and gives an explicit player-facing error instead of silently failing.
-
-
-## Spawn Feedback Hotfix (0.1.6)
-
-After MiraWarps completes its own warmup/cooldown checks, the final EssentialsSpawn teleport is now dispatched **as the player** using `essentialsspawn:spawn`. This removes Essentials' misleading `Console teleported you to spawn` message while keeping EssentialsX Spawn as the final spawn authority.
