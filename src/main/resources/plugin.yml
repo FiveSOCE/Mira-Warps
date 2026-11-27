@@ -1,7 +1,7 @@
 name: MiraWarps
-version: 0.1.7
+version: 0.1.8-1.18.2
 main: com.mira.warps.MiraWarpsPlugin
-api-version: '1.21'
+api-version: '1.18'
 authors: [FiveS]
 description: EssentialsX-backed warps plus first-class Spawn routing for the Mira plugin ecosystem.
 depend: [Essentials]
