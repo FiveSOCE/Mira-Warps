@@ -8,10 +8,10 @@ MiraWarps provides a clean paginated warp GUI and a Mira-owned `/spawn` warmup/c
 
 | Paper version | Java | JAR name | Download |
 | --- | --- | --- | --- |
-| **1.18.2** | 17 | `MiraWarps_1.18.2.jar` | [Legacy release](https://github.com/FiveSOCE/Mira-Warps/releases/tag/dev-1.18.2) |
-| **1.21.11–26.2** | Java 21 baseline; modern Paper may require Java 25 | `MiraWarps_1.21.11-26.2.jar` | [Modern release](https://github.com/FiveSOCE/Mira-Warps/releases/tag/compat-modern-1.21.11-26.2) |
+| **1.18.2** | 17 | `MiraWarps_1.18.2.jar` | [Download 1.18.2 JAR](https://github.com/FiveSOCE/Mira-Warps/releases/download/dev-1.18.2/MiraWarps_1.18.2.jar) |
+| **1.21.11–26.2** | Java 21 baseline; modern Paper may require Java 25 | `MiraWarps_1.21.11-26.2.jar` | [Download modern JAR](https://github.com/FiveSOCE/Mira-Warps/releases/download/compat-modern-1.21.11-26.2/MiraWarps_1.21.11-26.2.jar) |
 
-The direct downloads become available after successful CI and publication. Full runtime validation and Paper 1.19–1.21.10 compatibility remain unverified.
+Both release assets have passed CI and have been verified on GitHub. Full runtime validation and Paper 1.19–1.21.10 compatibility remain unverified.
 
 [Legacy source](https://github.com/FiveSOCE/Mira-Warps/tree/compat/1.18.2) · [Modern source](https://github.com/FiveSOCE/Mira-Warps) · [All releases](https://github.com/FiveSOCE/Mira-Warps/releases)
 
