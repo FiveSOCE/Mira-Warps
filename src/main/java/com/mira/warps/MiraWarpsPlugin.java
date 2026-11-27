@@ -45,7 +45,7 @@ public final class MiraWarpsPlugin extends JavaPlugin {
             });
         }
 
-        getLogger().info("MiraWarps v" + getPluginMeta().getVersion()
+        getLogger().info("MiraWarps v" + getDescription().getVersion()
                 + " enabled with " + gui.warpNames().size()
                 + " Essentials warp(s). Successful teleports are visualized by MiraCosmetics when installed.");
     }
