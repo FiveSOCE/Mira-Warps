@@ -124,7 +124,7 @@ public final class WarpGuiService {
         ItemStack item = new ItemStack(configMaterial("gui.filler-material", Material.GRAY_STAINED_GLASS_PANE));
         ItemMeta meta = item.getItemMeta();
         meta.displayName(Component.text(" ").decoration(TextDecoration.ITALIC, false));
-        meta.setEnchantmentGlintOverride(true);
+        // Legacy Paper does not support the per-item glint override.
         item.setItemMeta(meta);
         return item;
     }
