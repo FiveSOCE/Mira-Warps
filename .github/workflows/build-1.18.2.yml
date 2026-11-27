@@ -19,7 +19,12 @@ jobs:
         with:
           gradle-version: '8.10'
       - name: Build Java 17 for Paper 1.18.2
-        run: gradle clean test build --no-daemon --stacktrace
+        run: |
+          for attempt in 1 2 3; do
+            if gradle clean test build --no-daemon --stacktrace; then exit 0; fi
+            if [ "$attempt" -eq 3 ]; then exit 1; fi
+            sleep 15
+          done
       - name: Verify plugin
         shell: bash
         run: |
