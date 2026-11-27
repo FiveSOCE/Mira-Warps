@@ -58,4 +58,4 @@ tasks.withType<JavaCompile>().configureEach {
     options.release.set(bytecodeJavaVersion.get())
 }
 
-tasks.jar { archiveFileName.set("MiraWarps-${project.version}.jar") }
+tasks.jar { archiveFileName.set("MiraWarps_1.21.11-26.2.jar") }
