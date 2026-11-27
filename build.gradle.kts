@@ -4,7 +4,7 @@ import java.security.MessageDigest
 plugins { java }
 
 group = "com.mira"
-version = "0.1.8"
+version = "0.1.8-1.18.2"
 
 repositories {
     mavenCentral()
@@ -41,9 +41,9 @@ val downloadEssentials by tasks.registering {
     }
 }
 
-val paperApiVersion = providers.gradleProperty("paperApiVersion").orElse("1.21.11-R0.1-SNAPSHOT")
-val compileJavaVersion = providers.gradleProperty("compileJavaVersion").map(String::toInt).orElse(21)
-val bytecodeJavaVersion = providers.gradleProperty("bytecodeJavaVersion").map(String::toInt).orElse(21)
+val paperApiVersion = providers.gradleProperty("paperApiVersion").orElse("1.18.2-R0.1-SNAPSHOT")
+val compileJavaVersion = providers.gradleProperty("compileJavaVersion").map(String::toInt).orElse(17)
+val bytecodeJavaVersion = providers.gradleProperty("bytecodeJavaVersion").map(String::toInt).orElse(17)
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:${paperApiVersion.get()}")
@@ -58,4 +58,4 @@ tasks.withType<JavaCompile>().configureEach {
     options.release.set(bytecodeJavaVersion.get())
 }
 
-tasks.jar { archiveFileName.set("MiraWarps-${project.version}.jar") }
+tasks.jar { archiveFileName.set("MiraWarps_1.18.2.jar") }
