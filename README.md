@@ -4,20 +4,37 @@ EssentialsX-backed warp and spawn presentation layer for the Mira Paper server s
 
 MiraWarps provides a clean paginated warp GUI and a Mira-owned `/spawn` warmup/cooldown flow while leaving EssentialsX authoritative for warp data and EssentialsSpawn authoritative for the final spawn location.
 
-## Current Release
+## Version-specific downloads
 
-**v0.1.8** — compatible with Paper/Minecraft **1.21.11 through 26.2** using Java 21 bytecode.
+| Paper version | Java | JAR name | Download |
+| --- | --- | --- | --- |
+| **1.18.2** | 17 | `MiraWarps_1.18.2.jar` | [Legacy release](https://github.com/FiveSOCE/Mira-Warps/releases/tag/dev-1.18.2) |
+| **1.21.11–26.2** | Java 21 baseline; modern Paper may require Java 25 | `MiraWarps_1.21.11-26.2.jar` | [Modern release](https://github.com/FiveSOCE/Mira-Warps/releases/tag/compat-modern-1.21.11-26.2) |
 
-[View releases](https://github.com/FiveSOCE/Mira-Warps/releases)
+The direct downloads become available after successful CI and publication. Full runtime validation and Paper 1.19–1.21.10 compatibility remain unverified.
 
-## Requirements
+[Legacy source](https://github.com/FiveSOCE/Mira-Warps/tree/compat/1.18.2) · [Modern source](https://github.com/FiveSOCE/Mira-Warps) · [All releases](https://github.com/FiveSOCE/Mira-Warps/releases)
 
-- Paper 1.21.11 through 26.2
-- Java 21
-- EssentialsX 2.22.0+
-- EssentialsSpawn for `/spawn` and `/setspawn`
-- MiraCosmetics optional/recommended
-- MiraCombatTag optional integration
+## Dependencies and compatibility
+
+- **Required:** Matching Paper and Java runtime, and an **EssentialsX** version compatible with your Paper server. The plugin descriptor has the hard dependency `Essentials`.
+- **Optional:** EssentialsSpawn (required specifically for `/spawn` and `/setspawn` functionality), MiraCosmetics for teleport visuals, MiraCombatTag for teleport command restrictions.
+- **MiraCore:** Not required.
+- EssentialsX retains warp locations and named-warp handling. MiraWarps provides the warp selection GUI and its own spawn warmup/cooldown without a duplicate Essentials teleport timer.
+- On Paper 1.18.2 use a compatible EssentialsX/EssentialsSpawn pair; newer EssentialsX JARs may not support Java 17.
+- Back up `plugins/MiraWarps/` and the Essentials warp/spawn data before switching builds.
+
+## Commands and permission nodes
+
+| Command | Permission | Purpose |
+| --- | --- | --- |
+| `/mwarps`, `/mwarp` | `mirawarps.use` (everyone) | Open warp GUI |
+| `/warp`, `/warps` | Essentials warp access | Open list or use an Essentials warp |
+| `/warp <name>` | Essentials warp permission | Direct named warp |
+| `/spawn` | `mirawarps.spawn` (everyone) | Teleport to spawn with one warmup |
+| `/setspawn` | `mirawarps.setspawn` (OP) | Set EssentialsSpawn destination |
+
+Bypass permissions: `mirawarps.spawn.bypass.warmup` and `mirawarps.spawn.bypass.cooldown` (OP).
 
 ## Warp GUI
 
